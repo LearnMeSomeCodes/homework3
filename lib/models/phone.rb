@@ -5,6 +5,6 @@ class Phone < ActiveRecord::Base
 	validates :category, presence: true
 	validates :digits, presence: true
 	
-	belongs_to :entries
+  belongs_to :name
 
 end
