@@ -38,9 +38,9 @@ def create
   number_of_phone = gets.chomp.to_i
   number_of_phone.times do
     phone = Phone.new
-    print "Please provide a category (home, work, cell): "
+    print "Please provide a category: "
     phone.category = gets.chomp
-    print "Please provide a number (555-555-5555): "
+    print "Please provide a number: "
     phone.digits = gets.chomp
     entry.phones.push phone
   end
@@ -49,14 +49,14 @@ def create
   number_of_email = gets.chomp.to_i
   number_of_email.times do
     email = Email.new
-    print "Please provide a category (home, work): "
+    print "Please provide a category: "
     email.category = gets.chomp
     print "Please provide an address: "
     email.address = gets.chomp
     entry.emails.push email
   end
 
-  puts "Saving...\n"
+  puts "\nSaving...\n"
   if entry.save
     puts "Saved successfully!"
   else
@@ -84,14 +84,14 @@ def search
     
     puts "Phone numbers:\n"
     query_phone = Phone.where("name_id like ?", object.id)
-    query_phone.each do |object|
-      puts "   #{object.digits} (#{object.category})"
+    query_phone.each.with_index do |object, index|
+      puts "   [#{index+1}] #{object.digits} (#{object.category})"
     end
 
     puts "Email addresses:\n"
     query_email = Email.where("name_id like ?", object.id)
-    query_email.each do |object|
-      puts "   #{object.address} (#{object.category})"
+    query_email.each.with_index do |object, index|
+      puts "   [#{index+1}] #{object.address} (#{object.category})"
     end
 
     puts "\n*******************************************"
