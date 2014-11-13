@@ -1,5 +1,6 @@
 require 'active_record'
 require 'i18n'
+require 'json'
 
 puts "Establishing connection..."
 

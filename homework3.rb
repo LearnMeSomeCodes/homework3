@@ -1,7 +1,7 @@
 require_relative 'lib/connect'
-require_relative 'lib/models'
+require_relative 'models'
 
-puts "####################################\n### Welcome to your address book ###\n####################################\n\n"
+puts "####################################\n### Welcome to your address book ###\n####################################\n"
 
 def menu
   menu = ["create", "search", "quit"]
@@ -74,23 +74,29 @@ def search
   puts "\nYou are searching your address book by last name.\n\n"
   print "Please provide the last name you'd like to search for: "
   user_input = gets.chomp
-  query = Name.all.select {|i| i.last_name == "#{user_input}"}
-  puts query.inspect
+  query = Name.where("last_name like ?", user_input)
   puts "\nFound #{query.count} matches!"
 
-  query.each do |index|
-    puts "First name: #{query[index].first_name}"
-    puts "Last name: #{query[index].last_name}"
-    puts "Phone numbers:"
-    query[index].phones.count.times do |index_2|
-      puts "#{index} #{query[index].phones[index_2].digits} (#{query[index].phones[index_2].category})"
+  query.each do |object|
+    
+    puts "\nFirst name: #{object.first_name}"
+    puts "Last name: #{object.last_name}"
+    
+    puts "Phone numbers:\n"
+    query_phone = Phone.where("name_id like ?", object.id)
+    query_phone.each do |object|
+      puts "   #{object.digits} (#{object.category})"
     end
-    puts "Email addresses:"
-    query[index].emails.count.times do |index_3|
-      puts "#{index} #{query[index].emails[index_3].address} (#{query[index].emails[index_3].category})"
+
+    puts "Email addresses:\n"
+    query_email = Email.where("name_id like ?", object.id)
+    query_email.each do |object|
+      puts "   #{object.address} (#{object.category})"
     end
-    puts "*******************************************"
-  end  
+
+    puts "\n*******************************************"
+  
+  end
 
   puts menu
 
